@@ -4,20 +4,24 @@
  */
 package smart_home_system;
 
+
 public class Device {
     private String device_name;
     private String device_id;
+    private String owner_id;
     private String device_status;
     private int usage_counter;
     private boolean is_private;
-    private static int system_version;
+    private static double system_version = 1.3;
 
-    public Device(String device_name, String device_id, String device_status, int usage_counter, boolean is_private) {
+    public Device(String device_name, String device_id, String owner_id , String device_status, boolean is_private) {
         this.device_name = device_name;
         this.device_id = device_id;
+        this.owner_id = owner_id;
         this.device_status = device_status;
-        this.usage_counter = usage_counter;
+        usage_counter = 0;
         this.is_private = is_private;
+        
     }
 
     public String get_device_name() {
@@ -36,6 +40,15 @@ public class Device {
         this.device_id = device_id;
     }
 
+    public String get_owner_id() {
+        return owner_id;
+    }
+
+    public void set_owner_id(String owner_id) {
+        this.owner_id = owner_id;
+    }
+    
+
     public String get_device_status() {
         return device_status;
     }
@@ -46,10 +59,6 @@ public class Device {
 
     public int get_usage_counter() {
         return usage_counter;
-    }
-
-    public void set_usage_counter(int usage_counter) {
-        this.usage_counter = usage_counter;
     }
 
     public boolean get_is_private() {
@@ -65,7 +74,20 @@ public class Device {
         
     }
 
-    public static void set_system_version(int system_version) {
+    public static void update_system_version(double system_version) {
         Device.system_version = system_version;
-    }    
+    }
+    
+    public void increment_counter(){
+        usage_counter++;
+    }
+    
+    public void reset_usage_counter() {
+        usage_counter = 0;
+    }
+    
+    public void display_info(){
+        System.out.println("Device Name: " + device_name);
+        System.out.println("Device Status: " + device_status);     
+    }
 }
