@@ -4,22 +4,22 @@
  */
 package smart_home_system;
 
+import java.util.Scanner;
+
 
 public class Device {
     private String device_name;
     private String device_id;
-    private String owner_id;
     private String device_status;
     private int usage_counter;
     private boolean is_private;
     private final static int max_operating_cycles = 3;
     private static double system_version = 1.3;
 
-    public Device(String device_name, String device_id, String owner_id , String device_status, boolean is_private) {
+    public Device(String device_name, String device_id, boolean is_private) {
         this.device_name = device_name;
         this.device_id = device_id;
-        this.owner_id = owner_id;
-        this.device_status = device_status;
+        device_status = "off";
         usage_counter = 0;
         this.is_private = is_private;
         
@@ -40,15 +40,6 @@ public class Device {
     public void set_device_id(String device_id) {
         this.device_id = device_id;
     }
-
-    public String get_owner_id() {
-        return owner_id;
-    }
-
-    public void set_owner_id(String owner_id) {
-        this.owner_id = owner_id;
-    }
-    
 
     public String get_device_status() {
         return device_status;
@@ -76,10 +67,14 @@ public class Device {
 
     public static void display_system_version() {
         System.out.println("V" + system_version);
+        
     }
 
-    public static void update_system_version(double system_version) {
-        Device.system_version = system_version;
+    public static void update_system_version(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter new system version: ");
+        double new_version = input.nextDouble();
+        system_version = new_version;
     }
     
     public void increment_counter(){
@@ -91,7 +86,7 @@ public class Device {
     }
     
     public void display_info(){
-        System.out.println("Device Name: " + device_name);
-        System.out.println("Device Status: " + device_status);     
+        System.out.println("Name: " + device_name +
+                ", Status: " + device_status);     
     }
 }
