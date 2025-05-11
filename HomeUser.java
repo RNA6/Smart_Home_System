@@ -102,9 +102,4 @@ abstract public class HomeUser extends User{
 
     
     abstract public void send_notification(User user); 
-
-    @Override
-    public void display_function() {
-        super.display_function();
-    }
 }
