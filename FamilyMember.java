@@ -3,53 +3,122 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package smart_home_system;
-import java.util.ArrayList;
-private ArrayList<Device> devices;
+import java.util.*;
 
-public class FamilyMember {
-    private String name;
-    private String user_id;
-    private String email;
+public class FamilyMember extends HomeUser{
+    private Scanner input = new Scanner(System.in);
+    private static String login_notification = " has logged in to the system!";
 
-    public FamilyMember(String name, String user_id, String email) {
-        this.name = name;
-        this.user_id = user_id;
-        this.email = email;
-        this.devices = new ArrayList<>();
+    public FamilyMember(String username, String user_id, String password, String email, String date_of_birth){
+        super(username, user_id, password, email, date_of_birth);
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public void login() {
+        super.login(); 
+        
+        ArrayList<FamilyMember> familyMembers = SystemDatabase.getFamilyMembers();
+        for(FamilyMember member: familyMembers){
+            member.recieve_notification(this.get_username() + login_notification);
+        }
     }
 
-    public String getUser_id() {
-        return user_id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-     public void addDevice(Device device) {
-        devices.add(device);
-        System.out.println("Device added to " + name + "'s list: " + device.get_device_name());
-    }
-    public void removeDevice(Device device) {
-        devices.remove(device);
-        System.out.println("Device removed from " + name + "'s list: " + device.get_device_name());
-    }
-
-    public void displayDevices() {
-        System.out.println(name + "'s Devices:");
-        if (devices.isEmpty()) {
-            System.out.println("No devices assigned.");
-        } else {
-            for (Device device : devices) {
-                device.display_info();
+    public void view_private_devices(ArrayList<LinkedDevice> all_links, ArrayList<Device> devices, ArrayList<String> device_ids) {
+               
+        for(LinkedDevice link : all_links){
+            if(link.get_owner_id() == this.get_user_id()){
+                device_ids.add(link.get_device_id());
+            }
+        }
+                
+        if(device_ids.isEmpty()){
+            System.out.println("No private devices assigned to you.");
+        }
+        else{
+            System.out.println(this.get_username() + "'s Devices:");
+            int index = 1;
+            for(Device device : devices) {
+                if (device_ids.contains(device.get_device_id())) {
+                    System.out.print(index++);
+                    device.display_info();
+                }
             }
         }
     }
-}
 
+    public void update_inofrmation(){
+        
+        int choice;
+        String new_info;
+        
+        do{
+            System.out.println("What do you want to update?");
+            System.out.println("1. Username\n2. Email\n3. Pssword\n4.Exit");
+            System.out.print("Enter your choice: ");
+            
+            choice = input.nextInt();
+            input.nextLine();
+            
+            switch(choice){
+                case 1:
+                    System.out.print("Enter new username: ");
+                    break;
+
+                case 2:
+                    System.out.print("Enter new email: ");
+                    break;
+
+                case 3:
+                    System.out.print("Enter new password: ");
+                    break;
+                    
+                case 4:
+                    return;
+
+                default:
+                    System.out.println("Invalid choice!");
+                    continue;
+            }
+            
+            new_info = input.nextLine();
+            new_info = new_info.trim();
+            
+            if(new_info.isEmpty()){
+                System.out.println("This field can not be empty!");
+                continue;
+            }
+            
+            switch(choice){
+                case 1:
+                    this.set_username(new_info);
+                    break;
+                                    
+                case 2:
+                    this.set_email(new_info);
+                    break;
+                                    
+                case 3:
+                    this.set_password(new_info);
+                    break;                                 
+            }
+            System.out.println("Your account updated successfully!");
+        }while(choice != 4);
+    }
+
+    public void send_notification(User homeowner) {
+        String notification = "Some devices don't work!";
+        homeowner.recieve_notification(notification);
+    }
     
-
+    @Override
+    public void display_function() {
+        super.display_function();
+        System.out.println("1. Update User Information.");
+        System.out.println("2. View Private Devices List.");
+        System.out.println("3. Use Devices.");
+        System.out.println("4. Send Notification to Homeowner.");
+        System.out.println("5. View Notification List.");
+        System.out.println("6. Switch User.");
+        System.out.println("7. Log Out.");
+    }
+}
