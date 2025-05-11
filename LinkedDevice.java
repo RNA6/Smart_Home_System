@@ -13,11 +13,11 @@ public class LinkedDevice {
         this.device_id = device_id;
     }
 
-    @Override
-    public String toString() {
-        return "Linked_Device{" + "owner_id=" + owner_id + ", device_id=" + device_id + '}';
+    public String get_owner_id() {
+        return owner_id;
     }
-    
-    
-    
+
+    public String get_device_id() {
+        return device_id;
+    }       
 }
