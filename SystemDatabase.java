@@ -24,11 +24,27 @@ public class SystemDatabase {
         all_links.add(link);
     }
 
+    public static ArrayList<String> get_home_user_ids() {
+        return home_user_ids;
+    }
+
+    public static ArrayList<String> get_device_ids() {
+        return device_ids;
+    }
+
+    public static ArrayList<Device> get_devices() {
+        return devices;
+    }
+
+    public static ArrayList<LinkedDevice> get_all_links() {
+        return all_links;
+    }
+
+    public static ArrayList<FamilyMember> get_familyMembers() {
+        return familyMembers;
+    }
+
     public static ArrayList<Device> get_malfunctioning_devices() {
         return malfunctioning_devices;
     }
-
-    public static ArrayList<FamilyMember> getFamilyMembers() {
-        return familyMembers;
-    }    
 }
