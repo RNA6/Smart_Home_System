@@ -12,7 +12,7 @@ public class Device {
     private String device_status;
     private int usage_counter;
     private boolean is_private;
-    private static int max_operating_cycles = 3;
+    private final static int max_operating_cycles = 3;
     private static double system_version = 1.3;
 
     public Device(String device_name, String device_id, String owner_id , String device_status, boolean is_private) {
