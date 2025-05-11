@@ -12,6 +12,7 @@ public class Device {
     private String device_status;
     private int usage_counter;
     private boolean is_private;
+    private static int max_operating_cycles = 3;
     private static double system_version = 1.3;
 
     public Device(String device_name, String device_id, String owner_id , String device_status, boolean is_private) {
@@ -69,9 +70,12 @@ public class Device {
         this.is_private = is_private;
     }
 
+    public static int get_max_operating_cycles() {
+        return max_operating_cycles;
+    }
+
     public static void display_system_version() {
         System.out.println("V" + system_version);
-        
     }
 
     public static void update_system_version(double system_version) {
