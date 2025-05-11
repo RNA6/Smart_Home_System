@@ -98,8 +98,6 @@ abstract public class HomeUser extends User{
             }
         }
         device_ids.clear();
-    }
-
+    } 
     
-    abstract public void send_notification(User user); 
 }
