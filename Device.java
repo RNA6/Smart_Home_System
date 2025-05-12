@@ -4,6 +4,7 @@
  */
 package smart_home_system;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -13,7 +14,7 @@ public class Device {
     private String device_status;
     private int usage_counter;
     private boolean is_private;
-    private final static int max_operating_cycles = 3;
+    private final static int max_operating_cycles = 1;
     private static double system_version = 1.3;
 
     public Device(String device_name, String device_id, boolean is_private) {
@@ -72,9 +73,24 @@ public class Device {
 
     public static void update_system_version(){
         Scanner input = new Scanner(System.in);
-        System.out.println("Enter new system version: ");
-        double new_version = input.nextDouble();
-        system_version = new_version;
+        boolean invalid = true;
+        do{
+            try{
+                System.out.println("Enter new system version: ");
+                double new_version = input.nextDouble();
+                if(new_version < system_version){
+                    System.out.println("Invalid system version!");
+                }
+                else{
+                    system_version = new_version;
+                    System.out.println("System version is updated successfully");
+                }
+                invalid = false;
+            }
+            catch(InputMismatchException e){
+                System.out.println("Invalid input!! please enter numbers!");
+            }
+        }while(invalid);
     }
     
     public void increment_counter(){
