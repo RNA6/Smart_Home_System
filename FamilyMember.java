@@ -17,8 +17,9 @@ public class FamilyMember extends HomeUser{
     public void login() {
         super.login(); 
         
-        ArrayList<FamilyMember> familyMembers = SystemDatabase.getFamilyMembers();
+        ArrayList<FamilyMember> familyMembers = SystemDatabase.get_familyMembers();
         for(FamilyMember member: familyMembers){
+            if(!member.get_user_id().equalsIgnoreCase(this.get_user_id()))
             member.recieve_notification(this.get_username() + login_notification);
         }
     }
@@ -26,7 +27,7 @@ public class FamilyMember extends HomeUser{
     public void view_private_devices(ArrayList<LinkedDevice> all_links, ArrayList<Device> devices, ArrayList<String> device_ids) {
                
         for(LinkedDevice link : all_links){
-            if(link.get_owner_id() == this.get_user_id()){
+            if(link.get_owner_id().equalsIgnoreCase(this.get_user_id())){
                 device_ids.add(link.get_device_id());
             }
         }
@@ -50,69 +51,83 @@ public class FamilyMember extends HomeUser{
         
         int choice;
         String new_info;
-        
+        boolean invalid;
         do{
-            System.out.println("What do you want to update?");
-            System.out.println("1. Username\n2. Email\n3. Pssword\n4.Exit");
-            System.out.print("Enter your choice: ");
-            
-            choice = input.nextInt();
-            input.nextLine();
-            
-            switch(choice){
-                case 1:
-                    System.out.print("Enter new username: ");
-                    break;
+            invalid = false;
+            try{
+                do{
+                    System.out.println("What do you want to update?");
+                    System.out.println("1. Username\n2. Email\n3. Pssword\n4.Exit");
+                    System.out.print("Enter your choice: ");
 
-                case 2:
-                    System.out.print("Enter new email: ");
-                    break;
+                    choice = input.nextInt();
+                    input.nextLine();
+                    System.out.println();
 
-                case 3:
-                    System.out.print("Enter new password: ");
-                    break;
-                    
-                case 4:
-                    return;
+                    switch(choice){
+                        case 1:
+                            System.out.print("Enter new username: ");
+                            break;
 
-                default:
-                    System.out.println("Invalid choice!");
-                    continue;
+                        case 2:
+                            System.out.print("Enter new email: ");
+                            break;
+
+                        case 3:
+                            System.out.print("Enter new password: ");
+                            break;
+
+                        case 4:
+                            return;
+
+                        default:
+                            System.out.println("Invalid choice!");
+                            continue;
+                    }
+
+                    new_info = input.nextLine();
+                    new_info = new_info.trim();
+
+                    if(new_info.isEmpty()){
+                        System.out.println("This field can not be empty!");
+                        continue;
+                    }
+
+                    switch(choice){
+                        case 1:
+                            this.set_username(new_info);
+                            break;
+
+                        case 2:
+                            this.set_email(new_info);
+                            break;
+
+                        case 3:
+                            this.set_password(new_info);
+                            break;                                 
+                    }
+                    System.out.println("Your account updated successfully!\n");
+                }while(choice != 4);
             }
-            
-            new_info = input.nextLine();
-            new_info = new_info.trim();
-            
-            if(new_info.isEmpty()){
-                System.out.println("This field can not be empty!");
-                continue;
+            catch(InputMismatchException e){
+                System.out.println("Invalid input!! please enter numbers!");
+                input.nextLine();
+                invalid = true;
             }
-            
-            switch(choice){
-                case 1:
-                    this.set_username(new_info);
-                    break;
-                                    
-                case 2:
-                    this.set_email(new_info);
-                    break;
-                                    
-                case 3:
-                    this.set_password(new_info);
-                    break;                                 
-            }
-            System.out.println("Your account updated successfully!");
-        }while(choice != 4);
+        }while(invalid);
+        
     }
 
+    @Override
     public void send_notification(User homeowner) {
         String notification = "Some devices don't work!";
         homeowner.recieve_notification(notification);
+        System.out.println("Notification is sent successfully!");
     }
     
     @Override
-    public void display_function() {
-        super.display_function();
+    public void display_functions() {
+        super.display_functions();
         System.out.println("1. Update User Information.");
         System.out.println("2. View Private Devices List.");
         System.out.println("3. Use Devices.");
@@ -122,3 +137,5 @@ public class FamilyMember extends HomeUser{
         System.out.println("7. Log Out.");
     }
 }
+
+    
