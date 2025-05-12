@@ -80,18 +80,23 @@ abstract public class User {
 
     public void login(){
         Scanner input = new Scanner(System.in);
-        String username;
+        String email;
         String password;
         
-        System.out.print("Enter Username: ");
-        username = input.nextLine();
+        System.out.println("\n---------Login page---------");
+        
+        System.out.print("Enter Email: ");
+        email = input.nextLine();
         
         System.out.print("Enter Password: ");
         password = input.nextLine();
         
-        if(username == this.username && password == this.password){
+        if(email.equalsIgnoreCase(this.email)&& password.equalsIgnoreCase(this.password)){
             System.out.println("User logged in: " + username);
             logged_in = true;
+        }
+        else{
+            System.out.println("Invalid email or password!");
         }
     }
 
@@ -112,19 +117,19 @@ abstract public class User {
         notifications.add(notification);
     }
 
-    public void display_function(){
-        System.out.println(this.username + "Main Menu");
+    public void display_functions(){
+        System.out.println("\n-------" + this.username + " Main Menu-------");
     }
 
 
-    public void display_notification(){
+    public void display_notifications(){
         System.out.println("Notification for user " + username + ": ");
         if(notifications.isEmpty()){
             System.out.println("No notification.");
         }
         else{
             for(String notification : notifications){
-                System.out.println("-" + notification);
+                System.out.println((notifications.indexOf(notification)+1) + "." + notification);
             }
         }
     }
