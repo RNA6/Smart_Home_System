@@ -15,14 +15,12 @@ public class Administrator extends User{
         if (device.get_usage_counter() >= Device.get_max_operating_cycles()) {
                 return true;
         }
-        
-        System.out.println("All devices are functioning normally.");
         return false;
     }
 
     public void generate_report(ArrayList<Device> devices, ArrayList<LinkedDevice> all_links, ArrayList<Device> malfunctioning_devices){
         for(Device device : devices) {
-            System.out.println("Device " + devices.indexOf(device) + " information");
+            System.out.println("Device " + (devices.indexOf(device)+1) + " information");
             System.out.println("Id: " + device.get_device_id());
             device.display_info();
             System.out.println("Usage counter:" + device.get_usage_counter());
@@ -34,33 +32,22 @@ public class Administrator extends User{
             System.out.println("___________________________________");
         }
         Device.display_system_version();
-        
-        int choice;
-        
-        /*
-        do{
-           System.out.println("Do you want to notify the homeowner?");
-           System.out.println("1. yes\n2. no");        
-           choice = input.nextInt();
-           
-           if(choice == 1){
-               send_notification();
-           }
-           else if(choice != 2){
-               System.out.println("Invalid choice! Try again.");
-           }
-            
-        }while(choice != 1 && choice != 2);*/
     }
 
     public void provide_maintenance(ArrayList<Device> malfunctioning_devices) {
-        for (Device device : malfunctioning_devices) {            
-            System.out.println("Maintenance provided for device: " + device.get_device_name());
-            device.reset_usage_counter();
-            
-        }
-        System.out.println("Maintenance Done successfully!");
+        if(!malfunctioning_devices.isEmpty()){
+            for (Device device : malfunctioning_devices) {            
+                System.out.println("Maintenance provided for device: " + device.get_device_name());
+                device.reset_usage_counter();
+                device.set_device_status("off");
 
+            }
+            System.out.println("Maintenance Done successfully!");
+            malfunctioning_devices.clear();
+        }
+        else{
+            System.out.println("There is no malfunctioning devices, or no check is done!");
+        }
     }
 
     public void turn_off(ArrayList<Device> devices) {
@@ -76,19 +63,23 @@ public class Administrator extends User{
     @Override
     public void send_notification(User homeowner) {
         ArrayList<Device> malfunctioning_devices = SystemDatabase.get_malfunctioning_devices();
-        String notification = "You have " + malfunctioning_devices.size() + " devices require maintenance!";
+        String notification = "You have " + malfunctioning_devices.size() + " device/s require maintenance!";
         homeowner.recieve_notification(notification);
+        System.out.println("Notification is sent successfully!");
     }
 
     @Override
-    public void display_function() {
-        super.display_function();
+    public void display_functions() {
+        super.display_functions();
         System.out.println("1. Generate Device Status Report.");
         System.out.println("2. Provide maintenance.");
         System.out.println("3. Update System Version.");
         System.out.println("4. Turn Off All System Devices.");
-        System.out.println("5. Switch User.");
-        System.out.println("6. Log Out.");
-    }    
+        System.out.println("5. View Notification List.");
+        System.out.println("6. Switch User.");
+        System.out.println("7. Log Out.");
+    }
+    
+    
 }
 
